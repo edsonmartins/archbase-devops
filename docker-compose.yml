@@ -153,3 +153,31 @@ services:
         - "traefik.http.routers.archbase-java-docs-http.rule=Host(`java.archbase.dev`)"
         - "traefik.http.routers.archbase-java-docs-http.entrypoints=web"
         - "traefik.http.routers.archbase-java-docs-http.middlewares=redirect-to-https"
+
+  # Integrall.tech Landing Page - integrall.tech
+  integralltech-site:
+    <<: *default-opts
+    image: ghcr.io/integrall-tech/integralltech-site:${INTEGRALLTECH_TAG:-latest}
+    networks:
+      - traefik-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.integralltech-site.rule=Host(`integrall.tech`) || Host(`www.integrall.tech`)"
+        - "traefik.http.routers.integralltech-site.entrypoints=websecure"
+        - "traefik.http.routers.integralltech-site.tls=true"
+        - "traefik.http.routers.integralltech-site.tls.certresolver=letsencrypt"
+        - "traefik.http.services.integralltech-site.loadbalancer.server.port=80"
+        - "traefik.http.routers.integralltech-site-http.rule=Host(`integrall.tech`) || Host(`www.integrall.tech`)"
+        - "traefik.http.routers.integralltech-site-http.entrypoints=web"
+        - "traefik.http.routers.integralltech-site-http.middlewares=redirect-to-https"

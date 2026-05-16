@@ -98,5 +98,30 @@
         }
       }
     }
+  },
+  {
+    "id": "deploy-integralltech",
+    "execute-command": "/scripts/update-service.sh",
+    "command-working-directory": "/",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "integralltech-site"
+      },
+      {
+        "source": "string",
+        "name": "ghcr.io/integrall-tech/integralltech-site"
+      }
+    ],
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "{{getenv \"WEBHOOK_SECRET\"}}",
+        "parameter": {
+          "source": "header",
+          "name": "X-Webhook-Secret"
+        }
+      }
+    }
   }
 ]
