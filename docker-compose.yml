@@ -1,0 +1,125 @@
+version: '3.9'
+
+x-default-opts:
+  &default-opts
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+
+networks:
+  traefik-network:
+    external: true
+
+services:
+  # Site Principal - archbase.dev
+  site:
+    <<: *default-opts
+    image: ghcr.io/integrall-tech/archbase-site:${SITE_TAG:-latest}
+    networks:
+      - traefik-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.archbase-site.rule=Host(`archbase.dev`) || Host(`www.archbase.dev`)"
+        - "traefik.http.routers.archbase-site.entrypoints=websecure"
+        - "traefik.http.routers.archbase-site.tls=true"
+        - "traefik.http.routers.archbase-site.tls.certresolver=letsencrypt"
+        - "traefik.http.services.archbase-site.loadbalancer.server.port=80"
+        - "traefik.http.routers.archbase-site-http.rule=Host(`archbase.dev`) || Host(`www.archbase.dev`)"
+        - "traefik.http.routers.archbase-site-http.entrypoints=web"
+        - "traefik.http.routers.archbase-site-http.middlewares=redirect-to-https"
+
+  # Documentação React - react.archbase.dev
+  react-docs:
+    <<: *default-opts
+    image: ghcr.io/integrall-tech/archbase-react-docs:${REACT_DOCS_TAG:-latest}
+    networks:
+      - traefik-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.archbase-react-docs.rule=Host(`react.archbase.dev`)"
+        - "traefik.http.routers.archbase-react-docs.entrypoints=websecure"
+        - "traefik.http.routers.archbase-react-docs.tls=true"
+        - "traefik.http.routers.archbase-react-docs.tls.certresolver=letsencrypt"
+        - "traefik.http.services.archbase-react-docs.loadbalancer.server.port=80"
+        - "traefik.http.routers.archbase-react-docs-http.rule=Host(`react.archbase.dev`)"
+        - "traefik.http.routers.archbase-react-docs-http.entrypoints=web"
+        - "traefik.http.routers.archbase-react-docs-http.middlewares=redirect-to-https"
+
+  # Documentação Flutter - flutter.archbase.dev
+  flutter-docs:
+    <<: *default-opts
+    image: ghcr.io/integrall-tech/archbase-flutter-docs:${FLUTTER_DOCS_TAG:-latest}
+    networks:
+      - traefik-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.archbase-flutter-docs.rule=Host(`flutter.archbase.dev`)"
+        - "traefik.http.routers.archbase-flutter-docs.entrypoints=websecure"
+        - "traefik.http.routers.archbase-flutter-docs.tls=true"
+        - "traefik.http.routers.archbase-flutter-docs.tls.certresolver=letsencrypt"
+        - "traefik.http.services.archbase-flutter-docs.loadbalancer.server.port=80"
+        - "traefik.http.routers.archbase-flutter-docs-http.rule=Host(`flutter.archbase.dev`)"
+        - "traefik.http.routers.archbase-flutter-docs-http.entrypoints=web"
+        - "traefik.http.routers.archbase-flutter-docs-http.middlewares=redirect-to-https"
+
+  # Documentação Java - java.archbase.dev
+  java-docs:
+    <<: *default-opts
+    image: ghcr.io/integrall-tech/archbase-java-docs:${JAVA_DOCS_TAG:-latest}
+    networks:
+      - traefik-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.archbase-java-docs.rule=Host(`java.archbase.dev`)"
+        - "traefik.http.routers.archbase-java-docs.entrypoints=websecure"
+        - "traefik.http.routers.archbase-java-docs.tls=true"
+        - "traefik.http.routers.archbase-java-docs.tls.certresolver=letsencrypt"
+        - "traefik.http.services.archbase-java-docs.loadbalancer.server.port=80"
+        - "traefik.http.routers.archbase-java-docs-http.rule=Host(`java.archbase.dev`)"
+        - "traefik.http.routers.archbase-java-docs-http.entrypoints=web"
+        - "traefik.http.routers.archbase-java-docs-http.middlewares=redirect-to-https"

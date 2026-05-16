@@ -1,0 +1,6 @@
+.env
+*.pem
+*.key
+backups/
+traefik-letsencrypt/
+.DS_Store

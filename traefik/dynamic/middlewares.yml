@@ -1,0 +1,26 @@
+http:
+  middlewares:
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+    security-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+
+    gzip-compress:
+      compress:
+        excludedContentTypes:
+          - text/event-stream
+
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+        period: 1s
