@@ -15,11 +15,10 @@ services:
   # Webhook - Recebe notificações do GitHub para atualizar containers
   webhook:
     <<: *default-opts
-    image: almir/webhook:latest
+    image: archbase-webhook:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./webhook/hooks.json:/etc/webhook/hooks.json:ro
-      - ./webhook/scripts:/scripts:ro
     command: -verbose -hooks=/etc/webhook/hooks.json -hotreload
     networks:
       - traefik-network
