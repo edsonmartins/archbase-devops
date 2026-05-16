@@ -12,6 +12,36 @@ networks:
     external: true
 
 services:
+  # Webhook - Recebe notificações do GitHub para atualizar containers
+  webhook:
+    <<: *default-opts
+    image: adnanh/webhook:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./webhook/hooks.json:/etc/webhook/hooks.json:ro
+      - ./webhook/scripts:/scripts:ro
+    command: -verbose -hooks=/etc/webhook/hooks.json -hotreload
+    networks:
+      - traefik-network
+    environment:
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET:-}
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.webhook.rule=Host(`deploy.archbase.dev`)"
+        - "traefik.http.routers.webhook.entrypoints=websecure"
+        - "traefik.http.routers.webhook.tls=true"
+        - "traefik.http.routers.webhook.tls.certresolver=letsencrypt"
+        - "traefik.http.services.webhook.loadbalancer.server.port=9000"
+
   # Site Principal - archbase.dev
   site:
     <<: *default-opts

@@ -37,9 +37,11 @@ fi
 if [ -n "$GHCR_TOKEN" ] && [ -n "$GHCR_USER" ]; then
     echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
     echo "Login no GHCR: OK"
+    echo "Credenciais salvas em ~/.docker/config.json (usado pelo Watchtower)"
 else
     echo "AVISO: GHCR_TOKEN ou GHCR_USER não definidos em .env"
     echo "Configure manualmente: docker login ghcr.io"
+    echo "O Watchtower precisa das credenciais em ~/.docker/config.json"
 fi
 
 # Criar rede
