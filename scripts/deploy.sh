@@ -19,7 +19,7 @@ fi
 cd "$PROJECT_DIR"
 
 # Login no GHCR
-echo "[1/4] Login no GitHub Container Registry..."
+echo "[1/5] Login no GitHub Container Registry..."
 if [ -n "$GHCR_TOKEN" ] && [ -n "$GHCR_USER" ]; then
     echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 else
@@ -28,20 +28,37 @@ fi
 
 # Pull das imagens
 echo ""
-echo "[2/4] Baixando imagens..."
+echo "[2/5] Baixando imagens..."
 docker pull ghcr.io/integrall-tech/archbase-site:${SITE_TAG:-latest} || echo "Imagem site não encontrada"
 docker pull ghcr.io/integrall-tech/archbase-react-docs:${REACT_DOCS_TAG:-latest} || echo "Imagem react-docs não encontrada"
 docker pull ghcr.io/integrall-tech/archbase-flutter-docs:${FLUTTER_DOCS_TAG:-latest} || echo "Imagem flutter-docs não encontrada"
 docker pull ghcr.io/integrall-tech/archbase-java-docs:${JAVA_DOCS_TAG:-latest} || echo "Imagem java-docs não encontrada"
+docker pull ghcr.io/integrall-tech/integralltech-site:${INTEGRALLTECH_TAG:-latest} || echo "Imagem integralltech-site não encontrada"
 
-# Deploy Traefik
+# Deploy Traefik (verifica se já existe)
 echo ""
-echo "[3/4] Deploy do Traefik..."
-docker stack deploy -c docker-compose.traefik.yml traefik
+echo "[3/5] Verificando Traefik..."
+if docker stack ls | grep -q "^traefik "; then
+    echo "Traefik já está rodando. Pulando deploy do Traefik."
+    echo "Para atualizar, use: docker stack deploy -c docker-compose.traefik.yml traefik"
+else
+    echo "Deploy do Traefik..."
+    docker stack deploy -c docker-compose.traefik.yml traefik
+fi
+
+# Remover stacks antigos (se existirem)
+echo ""
+echo "[4/5] Removendo stacks antigos..."
+for stack in archbase-docs archbase-java archbase-react archbase-site integralltech; do
+    if docker stack ls | grep -q "^$stack "; then
+        echo "Removendo stack: $stack"
+        docker stack rm "$stack" || true
+    fi
+done
 
 # Deploy das aplicações
 echo ""
-echo "[4/4] Deploy das aplicações..."
+echo "[5/5] Deploy das aplicações..."
 docker stack deploy -c docker-compose.yml archbase
 
 echo ""
@@ -54,6 +71,8 @@ echo "  - archbase.dev (site principal)"
 echo "  - react.archbase.dev (docs React)"
 echo "  - flutter.archbase.dev (docs Flutter)"
 echo "  - java.archbase.dev (docs Java)"
+echo "  - integrall.tech (landing page)"
+echo "  - deploy.archbase.dev (webhook)"
 echo ""
 echo "Comandos úteis:"
 echo "  docker service ls                     # Listar serviços"
