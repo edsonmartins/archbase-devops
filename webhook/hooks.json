@@ -4,23 +4,14 @@
     "execute-command": "/scripts/update-service.sh",
     "command-working-directory": "/",
     "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "site"
-      },
-      {
-        "source": "string",
-        "name": "ghcr.io/integrall-tech/archbase-site"
-      }
+      {"source": "string", "name": "site"},
+      {"source": "string", "name": "ghcr.io/integrall-tech/archbase-site"}
     ],
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv \"WEBHOOK_SECRET\"}}",
-        "parameter": {
-          "source": "header",
-          "name": "x-webhook-secret"
-        }
+        "value": "49a387f9c75a40279399bb6032f740e669f077446fa65f2fcd0989afaf003554",
+        "parameter": {"source": "header", "name": "x-webhook-secret"}
       }
     }
   },
@@ -29,23 +20,14 @@
     "execute-command": "/scripts/update-service.sh",
     "command-working-directory": "/",
     "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "react-docs"
-      },
-      {
-        "source": "string",
-        "name": "ghcr.io/integrall-tech/archbase-react-docs"
-      }
+      {"source": "string", "name": "react-docs"},
+      {"source": "string", "name": "ghcr.io/integrall-tech/archbase-react-docs"}
     ],
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv \"WEBHOOK_SECRET\"}}",
-        "parameter": {
-          "source": "header",
-          "name": "x-webhook-secret"
-        }
+        "value": "49a387f9c75a40279399bb6032f740e669f077446fa65f2fcd0989afaf003554",
+        "parameter": {"source": "header", "name": "x-webhook-secret"}
       }
     }
   },
@@ -54,23 +36,14 @@
     "execute-command": "/scripts/update-service.sh",
     "command-working-directory": "/",
     "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "flutter-docs"
-      },
-      {
-        "source": "string",
-        "name": "ghcr.io/integrall-tech/archbase-flutter-docs"
-      }
+      {"source": "string", "name": "flutter-docs"},
+      {"source": "string", "name": "ghcr.io/integrall-tech/archbase-flutter-docs"}
     ],
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv \"WEBHOOK_SECRET\"}}",
-        "parameter": {
-          "source": "header",
-          "name": "x-webhook-secret"
-        }
+        "value": "49a387f9c75a40279399bb6032f740e669f077446fa65f2fcd0989afaf003554",
+        "parameter": {"source": "header", "name": "x-webhook-secret"}
       }
     }
   },
@@ -79,23 +52,14 @@
     "execute-command": "/scripts/update-service.sh",
     "command-working-directory": "/",
     "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "java-docs"
-      },
-      {
-        "source": "string",
-        "name": "ghcr.io/integrall-tech/archbase-java-docs"
-      }
+      {"source": "string", "name": "java-docs"},
+      {"source": "string", "name": "ghcr.io/integrall-tech/archbase-java-docs"}
     ],
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv \"WEBHOOK_SECRET\"}}",
-        "parameter": {
-          "source": "header",
-          "name": "x-webhook-secret"
-        }
+        "value": "49a387f9c75a40279399bb6032f740e669f077446fa65f2fcd0989afaf003554",
+        "parameter": {"source": "header", "name": "x-webhook-secret"}
       }
     }
   },
@@ -104,23 +68,14 @@
     "execute-command": "/scripts/update-service.sh",
     "command-working-directory": "/",
     "pass-arguments-to-command": [
-      {
-        "source": "string",
-        "name": "integralltech-site"
-      },
-      {
-        "source": "string",
-        "name": "ghcr.io/integrall-tech/integralltech-site"
-      }
+      {"source": "string", "name": "integralltech-site"},
+      {"source": "string", "name": "ghcr.io/integrall-tech/integralltech-site"}
     ],
     "trigger-rule": {
       "match": {
         "type": "value",
-        "value": "{{getenv \"WEBHOOK_SECRET\"}}",
-        "parameter": {
-          "source": "header",
-          "name": "x-webhook-secret"
-        }
+        "value": "49a387f9c75a40279399bb6032f740e669f077446fa65f2fcd0989afaf003554",
+        "parameter": {"source": "header", "name": "x-webhook-secret"}
       }
     }
   }

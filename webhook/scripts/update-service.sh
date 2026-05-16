@@ -12,10 +12,7 @@ docker pull "${IMAGE_NAME}:latest"
 # Atualizar serviço
 docker service update \
   --image "${IMAGE_NAME}:latest" \
-  --with-registry-auth \
+  --force \
   "archbase_${SERVICE_NAME}"
-
-# Limpar imagens antigas
-docker image prune -f
 
 echo "$(date): Service archbase_${SERVICE_NAME} updated successfully"
